@@ -1,0 +1,44 @@
+import os
+import shutil
+
+# Caminho para o diretório onde os arquivos XML estão armazenados inicialmente
+diretorio = '/home/gabrielguilhem/PROJETOS/stg30/XML/XMLs/1010 E 1200/nova'
+
+# Caminho para o diretório onde as pastas com os últimos 8 dígitos serão criadas
+diretorio_destino = '/home/gabrielguilhem/PROJETOS/stg30/XML'
+
+# Lista todas as subpastas no diretório inicial
+subpastas = os.listdir(diretorio)
+
+# Percorre cada subpasta
+for subpasta in subpastas:
+    caminho_completo = os.path.join(diretorio, subpasta)
+
+    # Verifica se o caminho da subpasta existe e é um diretório
+    if os.path.isdir(caminho_completo):
+        # Lista todos os arquivos na subpasta
+        arquivos = os.listdir(caminho_completo)
+
+        # Percorre cada arquivo na subpasta
+        for arquivo in arquivos:
+            if arquivo.endswith('.xml'):
+                # Extrai os últimos 8 dígitos antes da extensão .xml
+                nome_pasta = arquivo.split('.')[-2][-8:]
+
+                # Cria o caminho completo para a nova pasta no diretório de destino
+                nova_pasta = os.path.join(diretorio_destino, nome_pasta)
+
+                # Verifica se a pasta já existe, se não, cria
+                if not os.path.exists(nova_pasta):
+                    os.makedirs(nova_pasta)
+
+                # Caminho completo do arquivo atual
+                arquivo_atual = os.path.join(caminho_completo, arquivo)
+
+                # Caminho completo onde o arquivo será movido
+                novo_caminho = os.path.join(nova_pasta, arquivo)
+
+                # Move o arquivo
+                shutil.move(arquivo_atual, novo_caminho)
+
+print("Arquivos movidos com sucesso!")
